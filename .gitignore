@@ -1,0 +1,94 @@
+# --- FE_baemin specific ignores ---
+FE_baemin/node_modules
+FE_baemin/.pnp
+FE_baemin/.pnp.js
+FE_baemin/.yarn/install-state.gz
+
+# testing for FE_baemin
+FE_baemin/coverage
+
+# next.js
+FE_baemin/.next/
+FE_baemin/out/
+
+# production build output
+FE_baemin/build
+
+# misc
+FE_baemin/.DS_Store
+FE_baemin/*.pem
+
+# debug
+FE_baemin/npm-debug.log*
+FE_baemin/yarn-debug.log*
+FE_baemin/yarn-error.log*
+
+# local env files for FE_baemin
+FE_baemin/.env*.local
+
+# vercel
+FE_baemin/.vercel
+
+# typescript
+FE_baemin/*.tsbuildinfo
+FE_baemin/next-env.d.ts
+
+
+# --- BE_beamin specific ignores ---
+BE_beamin/node_modules/
+
+# compiled output for BE_beamin
+BE_beamin/dist
+BE_beamin/build
+
+# Logs
+BE_beamin/logs
+BE_beamin/*.log
+BE_beamin/npm-debug.log*
+BE_beamin/pnpm-debug.log*
+BE_beamin/yarn-debug.log*
+BE_beamin/yarn-error.log*
+BE_beamin/lerna-debug.log*
+
+# OS
+BE_beamin/.DS_Store
+
+# Tests
+BE_beamin/coverage
+BE_beamin/.nyc_output
+
+# IDEs and editors
+BE_beamin/.idea
+BE_beamin/.project
+BE_beamin/.classpath
+BE_beamin/.c9/
+BE_beamin/*.launch
+BE_beamin/.settings/
+BE_beamin/*.sublime-workspace
+
+# IDE - VSCode
+BE_beamin/.vscode/*
+!BE_beamin/.vscode/settings.json
+!BE_beamin/.vscode/tasks.json
+!BE_beamin/.vscode/launch.json
+!BE_beamin/.vscode/extensions.json
+
+# dotenv environment variable files
+# BE_beamin/.env
+# BE_beamin/.env.development.local
+# BE_beamin/.env.test.local
+# BE_beamin/.env.production.local
+# BE_beamin/.env.local
+
+# temp directory
+BE_beamin/.temp
+BE_beamin/.tmp
+
+# Runtime data
+BE_beamin/pids
+BE_beamin/*.pid
+BE_beamin/*.seed
+BE_beamin/*.pid.lock
+
+# Diagnostic reports (https://nodejs.org/api/report.html)
+BE_beamin/report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
