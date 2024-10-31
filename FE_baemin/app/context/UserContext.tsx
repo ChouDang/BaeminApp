@@ -56,8 +56,8 @@ const userReducer = (state: UserState, action: UserAction): UserState => {
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(userReducer, { user: null, isLoggedIn: false });
-  const router = useRouter(); // Khởi tạo useRouter để chuyển hướng
-
+  const router = useRouter(); 
+  
   const login = async (email: string, password: string) => {
     try {
       const response = await axiosInstance.post('/auth/login', { email, password });

@@ -38,7 +38,6 @@ export class PaymentController {
       quantity: number;
     }[];
   }) {
-    console.log(createPaymentDto,"createPaymentDto")
     return this.paymentService.createOrders(createPaymentDto);
   }
 

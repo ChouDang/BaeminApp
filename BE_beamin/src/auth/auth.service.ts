@@ -37,7 +37,6 @@ export class AuthService {
       const token = this.jwtService.sign({ userId: user.id });
       return { success: true, user, token };
     } catch (error) {
-      console.log(error, "error")
       throw new HttpException("Error not match user", HttpStatus.FORBIDDEN);
     }
   }

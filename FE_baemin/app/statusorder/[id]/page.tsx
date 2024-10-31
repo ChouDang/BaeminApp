@@ -41,7 +41,7 @@ const Page: React.FC = () => {
                 quantity: quantity,
                 categories: {
                     id: foods.category_id,
-                    name: ""  // Bạn cần lấy tên loại từ một nguồn khác nếu có sẵn
+                    name: ""  
                 },
                 order_food: []
             };

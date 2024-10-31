@@ -32,7 +32,6 @@ export default function Home() {
     const blockFetch = useRef(false)
 
     useEffect(() => {
-        console.log(searchParams, "c")
         if (id && !blockFetch.current && searchParams) {
             if (!opts.length) {
                 let checkStoreLocal = localStorage.getItem("allCategory")

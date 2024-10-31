@@ -12,7 +12,6 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app,config)
   SwaggerModule.setup("/swagger",app,document)
   app.use(express.static("."))
-  console.log("run")
 
   await app.listen(process.env.PORT ?? 8080);
 }

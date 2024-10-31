@@ -10,7 +10,6 @@ const useApiPayment = () => {
     try {
       const resp = await axiosInstance.post(servicePath, data)
       if (resp) {
-        console.log(resp, "resp")
         return resp
       }
     } catch (error) {
@@ -28,7 +27,6 @@ const useApiPayment = () => {
         }
       })
       if (resp) {
-        console.log(resp, "resp")
         return resp
       }
     } catch (error) {

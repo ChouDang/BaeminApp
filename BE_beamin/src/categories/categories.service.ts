@@ -20,7 +20,6 @@ export class CategoriesService {
     try {
       return this.prisma.categories.findMany()
     } catch (error) {
-      console.error("Prisma Error: ", error);
       throw new HttpException(error, HttpStatus.NOT_FOUND);
     }
   }
@@ -31,7 +30,6 @@ export class CategoriesService {
         where: { id }
       })
     } catch (error) {
-      console.error("Prisma Error: ", error);
       throw new HttpException(error, HttpStatus.NOT_FOUND);
     }
   }

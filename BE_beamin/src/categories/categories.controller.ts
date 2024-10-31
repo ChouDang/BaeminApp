@@ -30,7 +30,6 @@ export class CategoriesController {
   })
   createCategorie(@Body() body: { name: string }) {
     try {
-      console.log(body, "body")
       return this.categoriesService.createCategorie(body.name);
     } catch (error) {
       throw new HttpException("Server Error", HttpStatus.INTERNAL_SERVER_ERROR);

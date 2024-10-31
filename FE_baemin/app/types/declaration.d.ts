@@ -65,6 +65,5 @@ declare global {
     }
   }
   
-  // Đảm bảo tệp này được bao gồm trong tsconfig.json
   export { };
   

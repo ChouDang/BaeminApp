@@ -90,7 +90,6 @@ const cartReducer = (state: CartState, action: Action): CartState => {
         ...state,
         items: state.items.filter(item => item.id !== action.payload.id),
       };
-      console.log(data, "data")
       localStorage.setItem("Cart", JSON.stringify(data.items))
       return data
 

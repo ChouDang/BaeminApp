@@ -6,7 +6,6 @@ export class FoodsService {
   prisma = new PrismaClient()
 
   async addFoodsToRestaurant(food: Omit<foods, 'id'>, img: Express.Multer.File) {
-    console.log(img)
     try {
       return this.prisma.foods.create({
         data: {
@@ -17,7 +16,6 @@ export class FoodsService {
         },
       });
     } catch (error) {
-      console.log(error, "error")
       throw new HttpException(error, HttpStatus.BAD_REQUEST);
     }
   }
