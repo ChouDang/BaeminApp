@@ -2,11 +2,11 @@
 
 - Có upload `.env` BE chạy localhost.
 
-## Function
-- Đăng nhập, đăng ký, Security JWT
-- Xem danh sách restaurants theo categories (phân trang, search) BE
-- Xem chi tiết restaurants có foods 
-- Giỏ hàng có thể thêm nhiều cửa hàng thanh toán 1 lần
+## Feature
+- Đăng nhập, đăng ký, JWT
+- Xem danh sách restaurants theo categories ( phân trang, search ( food name, restaurant name ) ) BE
+- Xem chi tiết restaurants có foods (search, filter categories ,thêm món vào giỏ hàng)
+- Giỏ hàng có thể thêm nhiều food của nhiều restaurant thanh toán 1 lần
 - Thanh toán tự trừ tồn kho và ra đơn orders với order_food 
 
 ## DB - PostgreSQL
@@ -26,4 +26,4 @@
 - **Payment**: 
   - Auth JWT			
   - CRUD order
-    - Tạo đơn hàng với món ăn của nhà hàng 
+  - Tạo đơn hàng với món ăn của nhà hàng 
