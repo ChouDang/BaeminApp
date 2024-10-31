@@ -1,6 +1,6 @@
 # BaeminApp - Đặng Hoài Trọng
 
-- Có upload `.env` BE chạy localhost.
+- Có upload `.env` `db_baemin.dump` BE chạy localhost.
 
 ## Feature
 - Đăng nhập, đăng ký, JWT
