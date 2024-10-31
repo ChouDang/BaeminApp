@@ -4,9 +4,9 @@
 
 ## Feature
 - Đăng nhập, đăng ký, JWT
-- Xem danh sách restaurants theo categories ( phân trang, search ( food name, restaurant name ) ) BE
-- Xem chi tiết restaurants có foods (search, filter categories ,thêm món vào giỏ hàng)
-- Giỏ hàng có thể thêm nhiều food của nhiều restaurant thanh toán 1 lần
+- Xem danh sách restaurants theo categories ( phân trang, search (food.name, restaurant.name) ) 
+- Xem chi tiết restaurants có foods (search, filter categories ,thêm món vào giỏ hàng) 
+- Giỏ hàng có thể thêm nhiều food của nhiều restaurant thanh toán 1 lần 
 - Thanh toán tự trừ tồn kho và ra đơn orders với order_food 
 
 ## DB - PostgreSQL
