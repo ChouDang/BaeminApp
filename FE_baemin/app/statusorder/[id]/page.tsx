@@ -1,100 +1,71 @@
 'use client'
+import useApiPayment from '@/app/api/useApiPayment';
 import { ShoppingCartOutlined } from '@ant-design/icons';
 import Image from 'next/image';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import useApiRestaurants from '../../api/useApiRestaurants';
 import DetailsCheckout from '../../checkout/detailsCheckout';
-import { CartItem, useCart } from '../../context/CartContext';
+import { CartItem } from '../../context/CartContext';
 import { useUser } from '../../context/UserContext';
-import useApiPayment from '@/app/api/useApiPayment';
 
-
+const mapToFoodModel = (data: any) => {
+    return data.order_food.map((orderItem: any) => {
+        const { foods, quantity } = orderItem;
+        return {
+            id: foods.id,
+            name: foods.name,
+            description: foods.description,
+            price: parseInt(foods.price),
+            img: foods.img,
+            stock: foods.stock,
+            restaurant_id: foods.restaurant_id,
+            category_id: foods.category_id,
+            quantity: quantity,
+            categories: {
+                id: foods.category_id,
+                name: ""
+            },
+            order_food: []
+        };
+    }) as CartItem[];
+};
 
 const Page: React.FC = () => {
 
-    const router = useRouter()
     const params = useParams()
     const { id } = params || {}
     const { state: user } = useUser()
-    // const { state: { items: foodsCart }, dispatch } = useCart()
     const { getAllRestaurants } = useApiRestaurants()
     const { onGetOrder } = useApiPayment()
     const [lstRes, set_lstRes] = useState<Restaurant[]>([])
     const [lstFoodsOfRestaurent, set_lstFoodsOfRestaurent] = useState<CartItem[]>([])
     const [total, set_total] = useState(0)
-    const [detailOrder, set_detailOrder] = useState({})
-    const [foodsCart, set_foodsCart] = useState([])
-
-    const mapToFoodModel = (data: any) => {
-        return data.order_food.map((orderItem: any) => {
-            const { foods, quantity } = orderItem;
-            return {
-                id: foods.id,
-                name: foods.name,
-                description: foods.description,
-                price: parseInt(foods.price),
-                img: foods.img,
-                stock: foods.stock,
-                restaurant_id: foods.restaurant_id,
-                category_id: foods.category_id,
-                quantity: quantity,
-                categories: {
-                    id: foods.category_id,
-                    name: ""  
-                },
-                order_food: []
-            };
-        });
-    };
-
+    const [foodsCart, set_foodsCart] = useState<CartItem[]>([])
 
     useEffect(() => {
+        Boolean(id) && onGetOrder(id).then(resp => resp && set_foodsCart(mapToFoodModel(resp.data)))
         let checkLocalSt = localStorage.getItem("allRestaurants")
-        if (checkLocalSt) {
-            set_lstRes(JSON.parse(checkLocalSt) as Restaurant[])
-        } else {
-            getAllRestaurants().then(resp => {
+        checkLocalSt
+            ? set_lstRes(JSON.parse(checkLocalSt) as Restaurant[])
+            : getAllRestaurants().then(resp => {
                 if (resp) {
                     set_lstRes(resp.data)
                 }
             })
-        }
-    }, [])
-
-    useEffect(() => {
-        if (foodsCart.length) {
-            if (lstRes.length) {
-                let grCart = Object.entries(Object.groupBy(foodsCart, i => i?.restaurant_id as string))
-                let lstData = grCart.map(i => {
-                    let curRes = lstRes.find(x => x.id == i[0])
-                    if (curRes) {
-                        return {
-                            name: curRes.name,
-                            foods: i[1]
-                        }
-                    }
-                    return
-                })
-                set_lstFoodsOfRestaurent(lstData as any)
-            }
-            set_total(foodsCart.reduce((total: number, item: any) => {
-                return total += item?.price * item?.quantity
-            }, 0))
-
-        }
-    }, [foodsCart, lstRes])
-
-
-    useEffect(() => {
-        if (id) onGetOrder(id).then(resp => {
-            if (resp) {
-                set_detailOrder(resp.data)
-                set_foodsCart(mapToFoodModel(resp.data))
-            }
-        })
     }, [id])
 
+    useEffect(() => {
+        if (Boolean(foodsCart.length) && Boolean(lstRes.length)) {
+            set_lstFoodsOfRestaurent(Object.entries(Object.groupBy(foodsCart, i => i?.restaurant_id as string)).map(i => ({
+                name: lstRes.find(x => x.id == i[0])?.name || "",
+                foods: i[1]
+            })) as any || [])
+            set_total(foodsCart.reduce((total: number, item: any) => {
+                return total += item?.price * item?.quantity
+            }, 0) || 0)
+        }
+    }, [foodsCart, lstRes])
 
     return (
         <>
@@ -126,11 +97,11 @@ const Page: React.FC = () => {
                         <div className='w-full flex flex-row'>
                             <div className='w-1/3 flex flex-col gap-2'>
                                 <div>
-                                    <ul>
+                                    <ol>
                                         {lstFoodsOfRestaurent.length && lstFoodsOfRestaurent.map(i => {
                                             return <li>{i.name}</li>
                                         })}
-                                    </ul>
+                                    </ol>
                                 </div>
                                 <div className='text-gray-600 text-sm'>
                                     {(total + 20000).toLocaleString('de-DE')}đ - {foodsCart.length} món - Ví MoMo

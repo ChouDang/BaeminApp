@@ -1,5 +1,5 @@
 'use client'
-import { EyeInvisibleOutlined, EyeTwoTone, FacebookOutlined, GoogleOutlined } from "@ant-design/icons";
+import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import { Input } from "antd";
 import Link from "next/link";
 import React from "react";
@@ -17,7 +17,7 @@ const Page: React.FC = () => {
 
     function handleLogin() {
         function actCheckVal(_email: string, _password: string) {
-            return _email.trim() && _password.trim() ? login(_email, _password) : set_error(true)
+            return Boolean(_email.trim()) && Boolean(_password.trim()) ? login(_email, _password) : set_error(true)
         }
         actCheckVal(formLogin.email, formLogin.password)
     }

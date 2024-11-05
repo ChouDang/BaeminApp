@@ -1,13 +1,11 @@
 'use client'
 
+import { API_URL } from "@/apis/axiosConfig"
 import useApiCatory from "@/app/api/useApiCatory"
 import useApiRestaurants from "@/app/api/useApiRestaurants"
-import { Col, Pagination, Row, Select, Typography } from "antd"
+import { Card, Col, Pagination, Row, Select, Typography } from "antd"
 import { useParams, useRouter, useSearchParams } from "next/navigation"
 import { useEffect, useRef, useState } from "react"
-import { Card } from 'antd';
-import Image from "next/image"
-import { API_URL } from "@/apis/axiosConfig"
 
 const { Meta } = Card;
 

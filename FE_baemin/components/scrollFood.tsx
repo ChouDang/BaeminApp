@@ -1,11 +1,32 @@
 'use client'
 import { API_URL } from "@/apis/axiosConfig";
+import useApiRestaurants from "@/app/api/useApiRestaurants";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
-export default function ScrollBar({ items }: { items: Restaurant[] }) {
+export default function ScrollBar() {
     const router = useRouter();
+    const { getAllRestaurants } = useApiRestaurants()
+
+    const [restaurant, set_restaurant] = useState<Restaurant[]>([])
+
     const handleNavigate = (id: string) => router.push('/detailfood/' + id);
+
+    useEffect(() => {
+        function onInit() {
+            if (!restaurant.length) {
+                let checkStoreLocal = localStorage.getItem("allRestaurants")
+                if (!!checkStoreLocal) {
+                    set_restaurant(JSON.parse(checkStoreLocal))
+                } else {
+                    getAllRestaurants().then(resp => resp && Boolean(resp.data.length) && set_restaurant(resp.data)
+                    )
+                }
+            }
+        }
+        onInit()
+    }, [])
 
     return (
         <>
@@ -13,7 +34,7 @@ export default function ScrollBar({ items }: { items: Restaurant[] }) {
                 <div className="w-full h-[300px] flex flex-col px-4 pt-4 pb-2  overflow-y-hidden overflow-y-auto scroll-smooth " style={{}}>
                     <div>
                         <div className="w-full h-full flex  from-transparent via-gray-100 to-gray-300 gap-4">
-                            {items.length ? items.map(item => {
+                            {Boolean(restaurant.length) ? restaurant.map(item => {
                                 return <div className="group flex flex-col w-[200px] gap-x-2 border-solid border-2  border-beamin-50"
                                     onClick={() => handleNavigate(item.id)}
                                 >

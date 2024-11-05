@@ -1,17 +1,9 @@
-
 import { API_URL } from "@/apis/axiosConfig";
-import { Button } from "antd";
-import { Butterfly_Kids } from "next/font/google";
 import Image from "next/image";
-import React from "react";
-import { useCart } from "../context/CartContext";
 
 export default function DetailsCart({ Details }: {
     Details: any[]
 }) {
-
-    const { dispatch } = useCart()
-
     return (
         <>
             {Details.map((items, index) => (
@@ -41,19 +33,11 @@ export default function DetailsCart({ Details }: {
                                 <div className="col-span-2 flex items-center justify-center flex-row gap-3">
                                     <span className="text-[#0288d1] font-bold text-base">{(+item.price * item.quantity).toLocaleString('de-DE')}đ</span>
                                 </div>
-
-
                             </div>
                         ))}
                     </div>
-
-
                 </div>
             ))}
-
-
-
         </>
     )
-
 }

@@ -3,7 +3,7 @@ import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import { Input } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { MouseEvent, useState } from "react";
+import { MouseEvent, MouseEventHandler, useState } from "react";
 import { useUser } from "../context/UserContext";
 
 const Page: React.FC = () => {
@@ -28,8 +28,7 @@ const Page: React.FC = () => {
         }))
     }
 
-    const handleRes = (e: MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        e.preventDefault()
+    const handleRes = () => {
         signUp(form).then((res: any) => {
             if (res) {
                 set_status(true)
@@ -72,7 +71,7 @@ const Page: React.FC = () => {
                 </div>
 
                 <div className="flex flex-col w-full">
-                    <button className="w-full h-[40px] uppercase text-white bg-beamin rounded-lg" onClick={(e) => handleRes(e)}>Đăng ký</button>
+                    <button className="w-full h-[40px] uppercase text-white bg-beamin rounded-lg" onClick={() => handleRes()}>Đăng ký</button>
                 </div>
                 <div className="flex items-center justify-center gap-1">
                     <span className="text-gray-600">Bạn đã có tài khoản?

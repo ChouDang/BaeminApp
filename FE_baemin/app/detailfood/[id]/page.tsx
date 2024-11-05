@@ -27,7 +27,7 @@ export default function Home() {
     const [totalP, set_totalP] = useState(0)
 
     const actRemoveDiacritics = (str: string) => {
-        return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        return str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     }
 
     const onFilterMenuByCategory = (id: string, search: string) => {
@@ -90,7 +90,6 @@ export default function Home() {
                             lstCategory.push(i.categories)
                         }
                     })
-                    let newLst = [...category, ...lstCategory]
                     set_restaurantDetail(resp.data)
                     set_foodFilter(resp.data.foods)
                     set_category([...category, ...lstCategory])
@@ -100,7 +99,6 @@ export default function Home() {
     }, [params?.id])
 
     useEffect(() => {
-        onFilterMenuByCategory(selectCategory, search ? search : "")
     }, [search])
 
     useEffect(() => {
@@ -114,7 +112,7 @@ export default function Home() {
             set_totalP(0)
         }
     }, [select_foods])
-   
+
     return (<>
         <div className="flex flex-col w-full h-auto">
             <div className="bg-white w-full h-80 flex">
@@ -197,7 +195,10 @@ export default function Home() {
                     </div>
                     <div className="w-[50%] h-auto bg-white py-3 flex flex-col px-4">
                         <div className="w-full mb-5">
-                            <Input value={search} addonBefore={<SearchOutlined />} placeholder="" onChange={(e) => set_search(e.target.value as string)} />
+                            <Input value={search} addonBefore={<SearchOutlined />} placeholder="" onChange={(e) => {
+                                set_search(e.target.value as string)
+                                onFilterMenuByCategory(selectCategory, e.target.value ? e.target.value : "")
+                            }} />
                         </div>
                         <div className="flex flex-col w-full pl-1 gap-3 h-[400px] overflow-hidden overflow-scroll">
                             <div className="flex flex-col w-full gap-4 border-b">

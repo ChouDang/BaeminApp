@@ -1,14 +1,13 @@
 'use client'
 
-import { AccountBookOutlined, CompassOutlined, ShoppingCartOutlined } from "@ant-design/icons";
-import Image from "next/image";
-import DetailsCheckout from "./detailsCheckout";
+import { ShoppingCartOutlined } from "@ant-design/icons";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { CartItem, useCart } from "../context/CartContext";
-import useApiRestaurants from "../api/useApiRestaurants";
-import { useUser } from "../context/UserContext";
 import useApiPayment from "../api/useApiPayment";
+import useApiRestaurants from "../api/useApiRestaurants";
+import { CartItem, useCart } from "../context/CartContext";
+import { useUser } from "../context/UserContext";
+import DetailsCheckout from "./detailsCheckout";
 
 export default function Home() {
 
@@ -23,57 +22,38 @@ export default function Home() {
     const [total, set_total] = useState(0)
 
     const handleNavigate = async () => {
-        let data = {
+        const resp = await onInitOrderFood({
             userId: user.user?.id,
             items: foodsCart.map(i => ({
                 foodId: i.id,
                 quantity: i.quantity
             }))
-        }
-        const resp = await onInitOrderFood(data)
+        })
         if (resp) {
-            dispatch({
-                type: "CLEAR_CART"
-            })
-            localStorage.removeItem('Cart')
-            router.replace('/statusorder/' + resp.data.order.id);
+            router.push('/statusorder/' + resp.data.order.id);
+            setTimeout(() => {
+                dispatch({ type: "CLEAR_CART" })
+                localStorage.removeItem('Cart')
+            }, 1000)
         }
     };
 
     useEffect(() => {
         let checkLocalSt = localStorage.getItem("allRestaurants")
-        if (checkLocalSt) {
-            set_lstRes(JSON.parse(checkLocalSt) as Restaurant[])
-        } else {
-            getAllRestaurants().then(resp => {
-                if (resp) {
-                    set_lstRes(resp.data)
-                }
-            })
-        }
+        checkLocalSt
+            ? set_lstRes(JSON.parse(checkLocalSt) as Restaurant[])
+            : getAllRestaurants().then(resp => resp && set_lstRes(resp.data))
     }, [])
 
     useEffect(() => {
-        if (lstRes.length && foodsCart.length) {
-            let grCart = Object.entries(Object.groupBy(foodsCart, i => i.restaurant_id as string))
-            let lstData = grCart.map(i => {
-                let curRes = lstRes.find(x => x.id == i[0])
-                if (curRes) {
-                    return {
-                        name: curRes.name,
-                        foods: i[1]
-                    }
-                }
-                return
-            })
-            set_lstFoodsOfRestaurent(lstData as any)
-        }
-        if (foodsCart.length == 0) set_lstFoodsOfRestaurent([])
-        if (foodsCart.length) {
-            set_total(foodsCart.reduce((total: number, item) => {
-                return total += item.price * item.quantity
-            }, 0))
-        }
+        Boolean(lstRes.length) && Boolean(foodsCart.length)
+            && set_lstFoodsOfRestaurent(Object.entries(Object.groupBy(foodsCart, i => i.restaurant_id as string)).map(i => ({
+                name: lstRes.find(x => x.id == i[0])?.name || "",
+                foods: i[1]
+            })) as any)
+        Boolean(foodsCart.length)
+            ? set_total(foodsCart.reduce((total: number, item) => total += item.price * item.quantity, 0))
+            : set_lstFoodsOfRestaurent([])
     }, [foodsCart, lstRes])
 
     return (
@@ -91,8 +71,6 @@ export default function Home() {
                     </div>
                 </div>
                 <div className="w-1/2 h-full flex   items-center gap-3">
-
-
                 </div>
             </div>
             <div className="px-16 flex flex-col gap-3 ">'
@@ -174,12 +152,7 @@ export default function Home() {
                         </div>
                     </div>
                 </div>
-
             </div>
-
         </>
-
     )
-
-
 }

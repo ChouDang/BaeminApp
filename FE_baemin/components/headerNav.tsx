@@ -58,11 +58,11 @@ export default function HeaderNav() {
                         </Button>
                     </>
                     : <Button className="font-normal  leading-5 btn-home	" style={{ fontSize: '18px', height: '100%', color: 'rgb(128, 128, 137)' }} type="text" icon={<SolutionOutlined />} onClick={() => {
-                        router.replace("/login")
+                        router.push("/login")
                     }}>Tài Khoản</Button>}
 
                 <Button type="text" style={{ fontSize: '20px', width: '40px', height: '100%', color: '#3AC5C9' }} icon={<ShoppingCartOutlined />} onClick={() => {
-                    router.replace("/cart")
+                    router.push("/cart")
                 }} >
                 </Button>
 
