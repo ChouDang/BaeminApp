@@ -15,7 +15,7 @@
 - `restaurants` - `foods`: 1-n (1 nhà hàng có nhiều món ăn).
 - `orders` - `order_food`: 1-n (1 đơn hàng có nhiều món ăn).
 - `users` - `orders`: 1-n (1 người dùng có nhiều đơn hàng).
-- `foods` - `order_food`: n-1 (Nhiều món ăn có thể nằm trong nhiều đơn hàng).
+- `foods` - `order_food`: n-n (Nhiều món ăn có thể nằm trong nhiều đơn hàng).
 
 ## API: 
 - **User**: login, đăng ký, CRUD user 	
