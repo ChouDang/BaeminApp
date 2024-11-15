@@ -1,7 +1,8 @@
 import { Body, Controller, HttpException, HttpStatus, Post } from '@nestjs/common';
-import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { users } from '@prisma/client';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
+import { LoginDto } from './dto/login.dto';
+import { SignUpDto } from './dto/sign-up.dto';
 
 @ApiTags("User")
 @Controller('auth')
@@ -10,21 +11,8 @@ export class AuthController {
 
   @Post("sign-up")
   @ApiOperation({ summary: 'dang ky' })
-  @ApiBody({
-    schema: {
-      type: "object",
-      properties: {
-        firstname: { type: "string" },
-        lastname: { type: "string" },
-        username: { type: "string" },
-        phonenumber: { type: "string" },
-        email: { type: "string" },
-        password: { type: "string" },
-      }
-    }
-  })
   signUp(
-    @Body() body: Omit<users, 'id'>,
+    @Body() body: SignUpDto,
   ) {
     try {
       return this.authService.signUp(body)
@@ -35,17 +23,8 @@ export class AuthController {
 
   @Post("login")
   @ApiOperation({ summary: 'dang nhap' })
-  @ApiBody({
-    schema: {
-      type: "object",
-      properties: {
-        email: { type: "string" },
-        password: { type: "string" },
-      }
-    }
-  })
   login(
-    @Body() body: Pick<users, 'email' | 'password'>,
+    @Body() body: LoginDto,
   ) {
     try {
       return this.authService.login(body);

@@ -1,11 +1,12 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { foods, PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
+import { AddFoodDto } from './dto/add-food.dto';
 
 @Injectable()
 export class FoodsService {
   prisma = new PrismaClient()
 
-  async addFoodsToRestaurant(food: Omit<foods, 'id'>, img: Express.Multer.File) {
+  async addFoodsToRestaurant(food: AddFoodDto, img: Express.Multer.File) {
     try {
       return this.prisma.foods.create({
         data: {

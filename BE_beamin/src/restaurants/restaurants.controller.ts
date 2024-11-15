@@ -4,6 +4,7 @@ import { ApiBody, ApiConsumes, ApiOperation, ApiResponse, ApiTags } from '@nestj
 import { restaurants } from '@prisma/client';
 import { diskStorage } from 'multer';
 import { RestaurantsService } from './restaurants.service';
+import { CreateRestaurantDto } from './dto/create-restaurant.dto';
 
 @Controller('restaurants')
 export class RestaurantsController {
@@ -13,19 +14,6 @@ export class RestaurantsController {
   @ApiOperation({ summary: 'Tao cua hang' })
   @ApiResponse({ status: 400, description: 'Yêu cầu không hợp lệ.' })
   @Post()
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        name: { type: 'string' },
-        address: { type: 'string' },
-        img: {
-          type: 'string',
-          format: 'binary',
-        },
-      },
-    }
-  })
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('img', {
     storage: diskStorage({
@@ -34,7 +22,7 @@ export class RestaurantsController {
     }),
   }))
   async create(
-    @Body() createRestaurantDto: Omit<restaurants, "foods" | "id">,
+    @Body() createRestaurantDto: CreateRestaurantDto,
     @UploadedFile() img: Express.Multer.File
   ) {
     try {

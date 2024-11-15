@@ -3,19 +3,22 @@ import { JwtService } from '@nestjs/jwt';
 import { users } from '@prisma/client';
 import { createHmac } from 'crypto';
 import { UsersService } from 'src/users/users.service';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
   constructor(
     private jwtService: JwtService,
-    private usersService: UsersService, 
-  ) {}
+    private usersService: UsersService,
+  ) { }
 
   async signUp(body: Omit<users, 'id'>) {
     try {
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(body.password, salt);
       const newUser = await this.usersService.create({
         ...body,
-        password: this.hashPass(body.password)
+        password: hashedPassword,
       });
       return { success: true, user: newUser };
     } catch (error) {
@@ -23,17 +26,17 @@ export class AuthService {
     }
   }
 
-  async login(body:  Pick<users, 'email' | 'password'>) {
+  async login(body: Pick<users, 'email' | 'password'>) {
     try {
       const { email, password } = body;
-
-      const user = await this.usersService.findByEmail(email); 
-   
-      const hashedPassword = this.hashPass(password);
-      if (hashedPassword !== user.password) {
-        throw new UnauthorizedException('Invalid password');
+      const user = await this.usersService.findByEmail(email);
+      if (!user) {
+        throw new UnauthorizedException('Not Found');
       }
-
+      const isPasswordValid = await bcrypt.compare(password, user.password);
+      if (!isPasswordValid) {
+        throw new UnauthorizedException('Invalid email or password');
+      }
       const token = this.jwtService.sign({ userId: user.id });
       return { success: true, user, token };
     } catch (error) {

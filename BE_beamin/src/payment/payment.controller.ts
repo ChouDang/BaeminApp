@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Post, Query, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { foods } from '@prisma/client';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { CreatePaymentDto } from './dto/create-payment.dto';
 import { PaymentService } from './payment.service';
 
 @ApiBearerAuth()
@@ -13,51 +13,25 @@ export class PaymentController {
 
   @ApiOperation({ summary: 'Tao don hang' })
   @Post()
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        userId: { type: 'string', example: 'user-uuid' },
-        items: {
-          type: 'array',
-          items: {
-            type: 'object',
-            properties: {
-              foodId: { type: 'string', example: 'food-uuid' },
-              quantity: { type: 'number', example: 2 },
-            },
-          },
-        },
-      },
-    },
-  })
-  createOrders(@Body() createPaymentDto: {
-    userId: string;
-    items: {
-      foodId: string;
-      quantity: number;
-    }[];
-  }) {
+  createOrders(@Body() createPaymentDto: CreatePaymentDto) {
     return this.paymentService.createOrders(createPaymentDto);
   }
 
   @ApiOperation({ summary: 'tat ca don hang' })
   @Get("order")
-  getAllOrder () {
+  getAllOrder() {
     return this.paymentService.getAllOrder()
   }
 
-
   @ApiOperation({ summary: 'chi tiet don hang' })
   @Get("orderDetail")
-  getOrderDetail (@Query('id') id: string) {
+  getOrderDetail(@Query('id') id: string) {
     return this.paymentService.getOrderDetail(id)
   }
 
   @ApiOperation({ summary: 'del don hang' })
   @Delete("order")
-  delOrder (@Query('id') id: string) {
+  delOrder(@Query('id') id: string) {
     return this.paymentService.delOrder(id)
   }
-
 }

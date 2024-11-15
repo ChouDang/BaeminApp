@@ -1,8 +1,8 @@
 import { Body, Controller, Delete, Get, HttpException, HttpStatus, Post, Query, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { foods } from '@prisma/client';
+import { ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { diskStorage } from 'multer';
+import { AddFoodDto } from './dto/add-food.dto';
 import { FoodsService } from './foods.service';
 
 @Controller('foods')
@@ -11,23 +11,6 @@ export class FoodsController {
  
   @ApiTags('Restaurants')
   @ApiOperation({ summary: 'Them food vao restaurant' })
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        name: { type: 'string' },
-        description: { type: 'string' },
-        price: { type: 'number' },
-        stock: { type: 'number' },
-        restaurant_id: { type: 'string' },
-        category_id: { type: 'string' },
-        img: {
-          type: 'string',
-          format: 'binary',
-        },
-      },
-    },
-  })
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('img', {
     storage: diskStorage({
@@ -37,7 +20,7 @@ export class FoodsController {
   }))
   @Post()
   addFoodToRestaurant(
-    @Body() addFoodsToRestaurantDto: Omit<foods, 'id' >,
+    @Body() addFoodsToRestaurantDto: AddFoodDto,
     @UploadedFile() img: Express.Multer.File
   ) {
     try {
